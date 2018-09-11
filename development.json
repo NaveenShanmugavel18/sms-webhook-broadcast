@@ -1,0 +1,10 @@
+{
+	"apps" : [{
+		"name": "wyzebulbSmsWebhook",
+		"script": "bin/www",
+		"watch": "../wyzebulb-sms-webhook/",
+		"env": {
+			"NODE_ENV": "development"
+		}
+	}]
+}

@@ -1,0 +1,45 @@
+extends layout
+
+block content
+	h1= title
+
+	form#webhookForm(action='/', method='post')
+		ul.nav.nav-tabs
+			li.active
+				a(data-toggle='tab', href='#home') Incoming Request
+			li
+				a(data-toggle='tab', href='#menu1') Filters
+			li
+				a(data-toggle='tab', href='#menu2') Action
+		.tab-content
+			#home.tab-pane.fade.in.active
+				h3 Configure webhook fields
+				div.input-fields
+				button#addField.btn.btn-primary(type='button') Add field
+				button#configureField.btn.btn-primary(type='button') Configure fields
+			#menu1.tab-pane.fade
+				h3 Condition
+				div.row
+					div.form-group.col-md-4
+						select#inputFilter.form-control(name='filterKey')
+					div.form-group.col-md-4
+						select#operators.form-control(name='operators')
+							option(value='equal') Equals
+							option(value='neq') Not Equals 
+							option(value='contains') Contains 
+							option(value='gt') Greater than 
+							option(value='lt') Lesser than
+					div.form-group.col-md-4
+						input.form-control(name='filterValue', type='text', placeholder='Your value')
+				button#configureSms.btn.btn-primary(type='button') Configure SMS
+			#menu2.tab-pane.fade
+				h3 SMS Receiver and body
+				div.row
+					p To number
+					div.form-group.col-md-8
+						select#smsKey.form-control(name='smsKey')
+				div.row
+					p SMS Body
+					div.form-group.col-md-8
+						textarea.form-control(rows='4', cols='50' name='smsBody' placeholder='Enter SMS Body')
+				button.btn.btn-primary(type='submit') Submit
