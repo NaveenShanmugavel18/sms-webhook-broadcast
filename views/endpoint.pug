@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	h1= title
+	
+	div.row
+		div.form-group.col-md-6
+			input.form-control(type='text', name='clipboard', value=url, readonly='')
+		div.form-group.col-md-6
+			button#clipboardCopy.btn.btn-primary(type='button') Copy to clipboard

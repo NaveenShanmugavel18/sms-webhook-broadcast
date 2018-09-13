@@ -16,12 +16,12 @@ block content
 				h3 Configure webhook fields
 				div.input-fields
 				button#addField.btn.btn-primary(type='button') Add field
-				button#configureField.btn.btn-primary(type='button') Configure fields
+				button#configureField.next-step.btn.btn-primary(type='button') Configure fields
 			#menu1.tab-pane.fade
 				h3 Condition
 				div.row
 					div.form-group.col-md-4
-						select#inputFilter.form-control(name='filterKey')
+						select#inputFilter.input-fields-populate.form-control(name='filterKey')
 					div.form-group.col-md-4
 						select#operators.form-control(name='operators')
 							option(value='equal') Equals
@@ -31,13 +31,13 @@ block content
 							option(value='lt') Lesser than
 					div.form-group.col-md-4
 						input.form-control(name='filterValue', type='text', placeholder='Your value')
-				button#configureSms.btn.btn-primary(type='button') Configure SMS
+				button#configureSms.next-step.btn.btn-primary(type='button') Configure SMS
 			#menu2.tab-pane.fade
 				h3 SMS Receiver and body
 				div.row
 					p To number
 					div.form-group.col-md-8
-						select#smsKey.form-control(name='smsKey')
+						select#smsKey.input-fields-populate.form-control(name='smsKey')
 				div.row
 					p SMS Body
 					div.form-group.col-md-8

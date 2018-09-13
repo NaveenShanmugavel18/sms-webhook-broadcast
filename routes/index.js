@@ -11,39 +11,27 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
 	var data = {
-		"filterKey": req.body.filterKey,
+		"filterKey": utils.stringToSnakeCase(req.body.filterKey),
 		"filterValue": req.body.filterValue,
 		"operator": req.body.operators,
-		"senderSms": req.body.smsKey,
+		"senderSms": utils.stringToSnakeCase(req.body.smsKey),
 		"smsBody": req.body.smsBody,
 		"apiEndpoint": utils.randomString()
 	}
 
-	mongoClient.connect(config.url, function(err, db) {
-		/*if (err) {
-			res.render('questions', { 
-				title: 'Stackoverflow Data Visualization',
-				message: `Connect to your db and try again`
+	mongoClient.connect(config.url)
+		.then(db => {
+			return db.collection('webhooks').insert(data)
+		})
+		.then(dbres => {
+			res.render('endpoint', {
+				title: `API Endpoint`,
+				url: `${req.protocol}://${req.get('Host')}${req.url}api/webhook/${dbres.ops[0].apiEndpoint}`
 			});
-		}*/
-		db.collection('webhooks').insert(data, function(err, dbres) {
-			if (err) throw err;
-			console.log(dbres.ops);
-			res.json(data);
-			/*for (let item of dbres.ops) {
-				questionTags.push(item.item);
-				questionCount.push(item.count);
-			}
-			res.render('questions', { 
-				title: `Featured question Visualization`,
-				questionTags: questionTags,
-				questionCount: questionCount,
-				chartTitle: `Featured question tag wise`
-			});*/
-	  	});
-	});
-
-	// res.json(data);
+		})
+		.catch(err => {
+			res.json({ status: 'failure', statusCode: 422, message: 'Filter not statisfied.' });
+		});
 });
 
 module.exports = router;
