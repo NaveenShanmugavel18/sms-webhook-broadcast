@@ -1,4 +1,6 @@
 const crypto = require('crypto');
+	config = require('./config');
+	mongoClient = require('mongodb').MongoClient;
 
 const stringToSnakeCase = (str) => {
 	return str.replace(/\s+/g, '_').toLowerCase();
@@ -55,8 +57,13 @@ const checkFilter = (req, db) => {
 	return status;
 }
 
+const getMongoConnection = () => {
+	return mongoClient.connect(config.url);
+}
+
 module.exports = {
 	randomString: generateRandomString,
 	stringToSnakeCase: stringToSnakeCase,
-	checkFilter: checkFilter
+	checkFilter: checkFilter,
+	getMongoConnection: getMongoConnection
 }

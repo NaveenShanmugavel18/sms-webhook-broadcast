@@ -2,7 +2,6 @@ const express = require('express');
 	router = express.Router();
 	config = require('../config');
 	utils = require('../utils');
-	mongoClient = require('mongodb').MongoClient;
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -16,21 +15,27 @@ router.post('/', (req, res, next) => {
 		"operator": req.body.operators,
 		"senderSms": utils.stringToSnakeCase(req.body.smsKey),
 		"smsBody": req.body.smsBody,
-		"apiEndpoint": utils.randomString()
+		"apiEndpoint": utils.randomString(),
+		"smsCount": Number(0),
+		"webHookHitCount": Number(0),
+		"filtersPassed": Number(0)
 	}
 
-	mongoClient.connect(config.url)
+	utils.getMongoConnection()
 		.then(db => {
+			console.log('db', db);
 			return db.collection('webhooks').insert(data)
 		})
 		.then(dbres => {
+			console.log('dbres', dbres);
 			res.render('endpoint', {
 				title: `API Endpoint`,
 				url: `${req.protocol}://${req.get('Host')}${req.url}api/webhook/${dbres.ops[0].apiEndpoint}`
 			});
 		})
 		.catch(err => {
-			res.json({ status: 'failure', statusCode: 422, message: 'Filter not statisfied.' });
+			console.log('error', err);
+			res.json({ status: 'failure', statusCode: 424, message: 'Please connect your db and try again' });
 		});
 });
 
